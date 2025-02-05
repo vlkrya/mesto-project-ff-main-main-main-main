@@ -46,6 +46,17 @@ function disableButton(buttonElement) {
   buttonElement.classList.add(validationConfig.inactiveButtonClass);
 }
 
+// Функция включения кнопки (разблокировка после ошибки)
+function enableButton(buttonElement) {
+  buttonElement.disabled = false;
+  buttonElement.classList.remove(validationConfig.inactiveButtonClass);
+}
+
+// Функция смены текста кнопки
+function changeButtonText(buttonElement, text) {
+  buttonElement.textContent = text;
+}
+
 // Функция удаления карточки
 function cardDelete(element, cardId) {
   openPopup(popupRemoveCard);
@@ -99,13 +110,20 @@ avatarOpenBtn.addEventListener('click', () => {
 avatarForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   disableButton(avatarSaveButton);
+  changeButtonText(avatarSaveButton, "Сохранение...");
 
   addNewAvatar(inputAvatarForm.value)
     .then((res) => {
       avatarOpenBtn.style.backgroundImage = `url(${res.avatar})`;
       closePopup(popupChangeAvatar);
     })
-    .catch((err) => console.error("Ошибка при обновлении аватара:", err));
+    .catch((err) => {
+      console.error("Ошибка при обновлении аватара:", err);
+      enableButton(avatarSaveButton);
+    })
+    .finally(() => {
+      changeButtonText(avatarSaveButton, "Сохранить");
+    });
 });
 
 // Обработчик открытия модалки редактирования профиля
@@ -120,6 +138,7 @@ profileEditBtn.addEventListener('click', () => {
 function handleFormSubmitProfile(evt) {
   evt.preventDefault();
   disableButton(editProfileSaveBtn);
+  changeButtonText(editProfileSaveBtn, "Сохранение...");
 
   editUserInfo(nameInput.value, jobInput.value)
     .then((data) => {
@@ -127,7 +146,13 @@ function handleFormSubmitProfile(evt) {
       profileDescription.textContent = data.about;
       closePopup(profilePopupEdit);
     })
-    .catch((err) => console.error("Ошибка при обновлении профиля:", err));
+    .catch((err) => {
+      console.error("Ошибка при обновлении профиля:", err);
+      enableButton(editProfileSaveBtn);
+    })
+    .finally(() => {
+      changeButtonText(editProfileSaveBtn, "Сохранить");
+    });
 }
 
 formElementEditProfile.addEventListener('submit', handleFormSubmitProfile);
@@ -142,6 +167,7 @@ profileAddBtn.addEventListener('click', () => {
 function createNewCard(evt) {
   evt.preventDefault();
   disableButton(newCardSaveBtn);
+  changeButtonText(newCardSaveBtn, "Сохранение...");
 
   const element = {
     name: cardNameInput.value.trim(),
@@ -155,7 +181,13 @@ function createNewCard(evt) {
       closePopup(popupTypeNewCard);
       evt.target.reset();
     })
-    .catch((err) => console.error("Ошибка при добавлении карточки:", err));
+    .catch((err) => {
+      console.error("Ошибка при добавлении карточки:", err);
+      enableButton(newCardSaveBtn);
+    })
+    .finally(() => {
+      changeButtonText(newCardSaveBtn, "Создать");
+    });
 }
 
 formNewCardElement.addEventListener('submit', createNewCard);
