@@ -1,8 +1,17 @@
 import '../pages/index.css';
 import { createCard, onLikeFnc } from '../components/card.js';
 import { openPopup, closePopup } from '../components/modal.js';
-import { enableValidation, clearValidation, validationConfig } from '../components/validation.js';
+import { enableValidation, clearValidation } from '../components/validation.js';
 import { getUserInfo, getInitialCards, editUserInfo, addNewCard, addNewAvatar, removeCard } from '../components/api.js';
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input-invalid',
+  errorClass: 'popup__input-error_active'
+};
 
 const cardPlaceList = document.querySelector('.places__list');
 const profileEditBtn = document.querySelector('.profile__edit-button');
@@ -35,6 +44,8 @@ const avatarSaveButton = avatarForm.querySelector('.popup__button');
 // Модальное окно удаления карточки (оптимизация)
 const popupRemoveCard = document.querySelector('.popup_type_remove-card');
 const removeButton = popupRemoveCard.querySelector('.popup__button');
+
+
 
 enableValidation(validationConfig);
 

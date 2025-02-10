@@ -1,12 +1,3 @@
-export const validationConfig = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input-invalid',
-  errorClass: 'popup__input-error_active'
-};
-
 const showInputError = (formElement, inputElement, errorMessage, validationConfig) => {
   const nameInputError = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add(validationConfig.inputErrorClass);
